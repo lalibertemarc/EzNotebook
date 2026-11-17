@@ -81,14 +81,15 @@ ns.WELCOME = table.concat({
     "Notes: click the page to write, click outside or press Escape when done. Links you add stay clickable.",
     "",
     "Links: while you type, Shift-click a quest, item or spell to put its link in, or drag an item onto the box. "
-        .. "The Quest, Dungeon and Here buttons add one from your quest log, a dungeon list or where you stand.",
+        .. "The Quest and Dungeon buttons add one from your quest log or a dungeon list.",
+    "",
+    "Mark spot saves where you stand as a link: click it later to put a pin on your map and find your way back.",
     "",
     "Todo lists: type a task and press Enter. A task with a link ticks itself:",
     "- a quest: when you turn it in",
     "- a dungeon: when you leave it with a boss down, or when you kill the boss you picked",
     "- an item with a number (\"20 [Linen Cloth]\"): when your bags and bank hold that many",
     "- \"Reach level 30\": when you get there",
-    "- a place (Here button): when you walk into it",
     "",
     "Right-click a task to make it daily: it unchecks itself at the daily reset. Done one-time tasks clear "
         .. "away at the reset unless the list keeps them.",

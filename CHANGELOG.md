@@ -5,6 +5,8 @@
 - **Minimap button.** Click to open the notebook, right-click to add a task to your Today list, drag it around the map's edge.
 - **Addon drawer entry** (WoW Forever) now has a tooltip and the same right-click.
 - Both can be turned off in the window's Options menu, or with `/nb minimap off` and `/nb drawer off`.
+- **Here is now Mark spot**, and it's a bookmark: it saves where you stand as a link, and clicking the link later puts a pin on your map to find your way back (Classic Era has no map pins for addons: you get its coordinates in chat). A task with a marked spot no longer ticks itself when you walk into that zone, which happened just passing through.
+- The add-task and search hints stay inside their boxes.
 
 ## v1.0.0-beta.1
 

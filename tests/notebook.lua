@@ -218,11 +218,14 @@ do
     check(link.boss == 1002 and link.name == "The Deadmines" and link.bossName == "Sneed: Shredder",
         "dungeon boss, colon in the boss name")
     local place = ns.PlaceLink("Zul:Aman", "Hall 100%", 1429, 0.4231, 0.6512)
-    link = ns.ParseTask("Visit " .. place)
-    check(link.k == "place" and link.zone == "Zul:Aman" and link.sub == "Hall 100%", "place zone/sub survive")
-    check(math.abs(link.x - 0.423) < 0.0001 and link.map == 1429, "place spot")
-    link = ns.ParseTask(ns.PlaceLink("Elwynn Forest", "", 1429, 0, 0))
-    check(link.sub == nil and link.zone == "Elwynn Forest", "place without a subzone")
+    local kind, f = ns.ParseLink(place:match("|H(.-)|h"))
+    check(kind == "place" and f.zone == "Zul:Aman" and f.sub == "Hall 100%", "spot zone/sub survive")
+    check(math.abs(f.x - 0.423) < 0.0001 and f.map == 1429, "spot coordinates")
+    _, f = ns.ParseLink(ns.PlaceLink("Elwynn Forest", "", 1429, 0, 0):match("|H(.-)|h"))
+    check(f.sub == nil and f.zone == "Elwynn Forest", "spot without a subzone")
+    check(ns.ParseTask("Visit " .. place) == nil, "a marked spot doesn't make a task tick")
+    link, goal = ns.ParseTask("Gather 20 " .. ITEM .. " at " .. place)
+    check(link.k == "item" and goal == 20, "a spot next to an item leaves the item's count")
     check(ns.ParseTask("Reach level 30").lv == 30, "reach level")
     check(ns.ParseTask("ding 42").lv == 42, "ding")
     check(ns.ParseTask("Level 20 then hearth").lv == 20, "level at the start")
@@ -379,15 +382,14 @@ state.dead = false
 fire("ZONE_CHANGED_NEW_AREA")
 check(done("Run ") and ns.char.run == nil, "out alive with a boss down: run ticks")
 
--- Places: never on the spot it was made, only on walking in
+-- Marked spots: bookmarks only. Clicking one in Era (no map pins for addons) prints where it is.
 SlashCmdList.EZNOTEBOOKTODO("Visit " .. ns.HereLink())
 runTimers()
-check(not done("Visit"), "made here, not ticked")
-state.sub = "Northshire"
-fire("ZONE_CHANGED")
-state.sub = "Goldshire"
-fire("ZONE_CHANGED")
-check(done("Visit"), "walking back in ticks")
+check(not done("Visit") and task("Visit").link == nil, "a marked spot is a plain task")
+fire("ZONE_CHANGED_NEW_AREA")
+check(not done("Visit"), "walking around doesn't tick it")
+ns.LinkClick(ns.HereLink():match("|H(.-)|h"), "[Goldshire]")
+check(lastPrint():find("Goldshire, Elwynn Forest: 42.3, 65.1", 1, true), "no map pins: coordinates in chat")
 
 -- Daily tasks and the reset
 local daily = ns.AddTask(today, "Cook fish", true)

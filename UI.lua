@@ -7,7 +7,7 @@ local PAD = 8
 local TREE_W = 210
 local ROW_H = 20
 local TASK_H = 22
-local MIN_W, MIN_H = 600, 340
+local MIN_W, MIN_H = 660, 340 -- the list bar needs room for its add box next to its buttons
 
 local window, search, searchHint
 local treePane, treeRows, treeOffset = nil, {}, 0
@@ -319,6 +319,7 @@ local function DungeonPicker(put)
     ns.Menu(entries)
 end
 
+-- Mark spot: a bookmark of where you stand (zone, subzone, map spot). Clicking it later puts a pin on the map.
 local function Here(put)
     local link = ns.HereLink()
     if not link then return ns.Print("Can't tell where you are right now.") end
@@ -735,14 +736,17 @@ local function BuildNote()
     local dungeon = ns.Button(noteBar, "Dungeon", 64)
     dungeon:SetPoint("LEFT", quest, "RIGHT", 4, 0)
     dungeon:SetScript("OnClick", function() DungeonPicker(Put) end)
-    local here = ns.Button(noteBar, "Here", 48)
+    local here = ns.Button(noteBar, "Mark spot", 70)
     here:SetPoint("LEFT", dungeon, "RIGHT", 4, 0)
     here:SetScript("OnClick", function() Here(Put) end)
-    ns.Tip(here, "Link where you stand", "Zone, subzone and map spot. Clicking it later sets a map pin (Forever).")
+    ns.Tip(here, "Mark this spot",
+        "Saves where you stand as a link. Click the link later to put a pin on your map and find your way back "
+        .. "(Classic Era: its coordinates in chat).")
     local hint = ns.Text(noteBar)
     hint:SetPoint("LEFT", here, "RIGHT", 10, 0)
     hint:SetPoint("RIGHT")
     hint:SetJustifyH("LEFT")
+    hint:SetWordWrap(false)
     hint:SetTextColor(0.6, 0.6, 0.6)
     hint:SetText("Shift-click or drop items and quests in.")
 
@@ -882,10 +886,12 @@ local function BuildList()
         addBox:SetFocus()
         addBox:Insert(link)
     end
-    local here = ns.Button(listPane, "Here", 44)
+    local here = ns.Button(listPane, "Mark spot", 70)
     here:SetPoint("BOTTOMRIGHT", 0, 24)
     here:SetScript("OnClick", function() Here(Put) end)
-    ns.Tip(here, "Link where you stand", "The task ticks when you walk into that place.")
+    ns.Tip(here, "Mark this spot",
+        "Saves where you stand as a link, a reminder of where the task is. Click it later to put a pin on your "
+        .. "map (Classic Era: its coordinates in chat). It doesn't tick the task.")
     local dungeon = ns.Button(listPane, "Dungeon", 60)
     dungeon:SetPoint("RIGHT", here, "LEFT", -4, 0)
     dungeon:SetScript("OnClick", function() DungeonPicker(Put) end)

@@ -164,8 +164,8 @@ function ns.NewPage(kind, title, folder)
     return p
 end
 
--- Is it already done? (A quest turned in before, enough of the item, the level reached.) Places only tick
--- when you walk in and dungeons when you clear them.
+-- Is it already done? (A quest turned in before, enough of the item, the level reached.) Dungeons only tick
+-- when you clear them; marked spots never tick (they're bookmarks).
 function ns.Met(link, item)
     if link.k == "quest" then return ns.QuestDone(link.id) end
     if link.k == "item" then return item.goal ~= nil and ns.ItemCount(link.id) >= item.goal end
@@ -234,18 +234,6 @@ end
 
 function ns.CheckAll()
     return ns.Tick(function(link, item) return ns.Met(link, item) end)
-end
-
-local lastZone, lastSub
-local function CheckPlace()
-    local zone = GetRealZoneText and GetRealZoneText() or GetZoneText()
-    local sub = GetSubZoneText and GetSubZoneText() or ""
-    if IsSecret(zone) or IsSecret(sub) then return end
-    if zone == lastZone and sub == lastSub then return end
-    local first = lastZone == nil
-    lastZone, lastSub = zone, sub
-    if first then return end -- logging in where a place task points isn't walking in
-    ns.Tick(function(link) return link.k == "place" and ns.PlaceMatch(link, zone, sub) end)
 end
 
 -- Dungeon runs: char.run = { id, name, kills, t } survives a /reload inside.
@@ -382,7 +370,8 @@ local function OwnTooltip(tip, link)
     elseif kind == "place" then
         tip:AddLine(f.sub and (f.sub .. ", " .. f.zone) or f.zone, 0.5, 0.82, 1)
         if f.x and f.x > 0 then tip:AddLine(("%.1f, %.1f"):format(f.x * 100, f.y * 100), 1, 1, 1) end
-        tip:AddLine(ns.CanWaypoint(f) and "Click: map pin" or "Ticks when you walk in", 0.7, 0.7, 0.7)
+        tip:AddLine(ns.CanWaypoint(f) and "Click: put a pin on your map" or "Click: its coordinates in chat",
+            0.7, 0.7, 0.7)
         return true
     end
 end
@@ -405,7 +394,8 @@ function ns.LinkLeave()
 end
 
 -- Blizzard links open in ItemRefTooltip as its own SetItemRef does (the same link again closes it); Shift-click
--- while typing in chat passes the link on. Ours: a map pin for places, a tooltip for the rest.
+-- while typing in chat passes the link on. Ours: a map pin for a marked spot (Forever; Era has no map pins for
+-- addons, so its coordinates go to chat), a tooltip for the rest.
 local refShown
 function ns.LinkClick(link, text)
     if IsModifiedClick and IsModifiedClick("CHATLINK") then
@@ -419,6 +409,10 @@ function ns.LinkClick(link, text)
             C_SuperTrack.SetSuperTrackedUserWaypoint(true)
         end
         return ns.Print(("Map pin set: %s."):format(f.sub or f.zone))
+    elseif kind == "place" then
+        local where = f.sub and (f.sub .. ", " .. f.zone) or f.zone
+        if f.x and f.x > 0 then where = ("%s: %.1f, %.1f"):format(where, f.x * 100, f.y * 100) end
+        return ns.Print(where)
     end
     local tip = ItemRefTooltip
     if not tip then return end
@@ -568,12 +562,11 @@ events:SetScript("OnEvent", function(_, event, a, b, _, _, e)
         SlashCmdList.EZNOTEBOOKTODO = ns.TodoSlash
         if ns.Login then ns.Login() end
         for _, ev in ipairs({ "PLAYER_ENTERING_WORLD", "QUEST_TURNED_IN", "ENCOUNTER_END", "BAG_UPDATE_DELAYED",
-            "PLAYER_LEVEL_UP", "ZONE_CHANGED", "ZONE_CHANGED_INDOORS", "ZONE_CHANGED_NEW_AREA" }) do
+            "PLAYER_LEVEL_UP", "ZONE_CHANGED_NEW_AREA" }) do
             events:RegisterEvent(ev)
         end
     elseif event == "PLAYER_ENTERING_WORLD" then
         CheckInstance()
-        CheckPlace()
         C_Timer.After(3, ns.CheckAll) -- quest completion data settles after the loading screen
     elseif event == "QUEST_TURNED_IN" then
         local id = a
@@ -594,9 +587,8 @@ events:SetScript("OnEvent", function(_, event, a, b, _, _, e)
     elseif event == "PLAYER_LEVEL_UP" then
         local level = tonumber(a) or ns.Level()
         ns.Tick(function(link) return link.k == "level" and link.lv <= level end)
-    else -- zone changes
-        CheckPlace()
-        if event == "ZONE_CHANGED_NEW_AREA" then CheckInstance() end
+    elseif event == "ZONE_CHANGED_NEW_AREA" then
+        CheckInstance()
     end
 end)
 

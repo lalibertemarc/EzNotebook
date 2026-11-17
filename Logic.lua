@@ -7,7 +7,7 @@
 --   pages[id]   = { id, kind = "note"|"list", title, folder, char, charName, order, t, edited,
 --                   text (note), items (list), keep (done one-time tasks stay past the reset),
 --                   each (every character ticks its own) }
---   item        = { id, text, link = { k = "quest"|"item"|"dungeon"|"level"|"place", ... }, goal, daily,
+--   item        = { id, text, link = { k = "quest"|"item"|"dungeon"|"level", ... }, goal, daily,
 --                   done = time|nil, by = { [GUID] = time } (each pages) }
 -- `char` set = only that character sees it (GUID: stable, unlike names); `charName` is for showing.
 local _, ns = ...
@@ -110,7 +110,8 @@ local function Find(text, prefix)
     return target, label
 end
 
--- What a typed task links to: quest > dungeon > place > item (with a count) > "reach level N".
+-- What a typed task links to: quest > dungeon > item (with a count) > "reach level N". A marked spot (place
+-- link) is only a bookmark: it never makes a task tick, so it isn't read here.
 -- Returns the link table or nil, and the item goal if any.
 function ns.ParseTask(text)
     text = text or ""
@@ -128,11 +129,6 @@ function ns.ParseTask(text)
             return { k = "dungeon", id = f.id, boss = f.boss, name = f.boss and name or label,
                 bossName = f.boss and bossName or nil }
         end
-    end
-    target, label = Find(text, "addon:EzNotebook:place:")
-    if target then
-        local _, f = ns.ParseLink(target)
-        if f then return { k = "place", zone = f.zone, sub = f.sub, map = f.map, x = f.x, y = f.y, name = label } end
     end
     -- Words around the links, for a count or a level.
     local rest = text:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""):gsub("|H.-|h.-|h", " ")
@@ -426,10 +422,4 @@ function ns.Tickable(db, me, reset, test)
         end
     end
     return out
-end
-
-function ns.PlaceMatch(link, zone, sub)
-    if not link.zone or not zone then return false end
-    if link.zone:lower() ~= zone:lower() then return false end
-    return not link.sub or (sub ~= nil and link.sub:lower() == sub:lower())
 end
