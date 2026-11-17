@@ -8,7 +8,6 @@ globals = {
     "EzNotebookCharDB",
     "EzNotebook_Toggle",
     "EzNotebook_AddTask",
-    "EzNotebook_OnAddonCompartmentClick",
     "BINDING_HEADER_EZNOTEBOOK",
     "BINDING_NAME_EZNOTEBOOK_TOGGLE",
     "BINDING_NAME_EZNOTEBOOK_ADD",
@@ -25,7 +24,7 @@ read_globals = {
     -- Frames & UI
     "CreateFrame", "UIParent", "ChatFrame1", "DEFAULT_CHAT_FRAME", "GameTooltip", "ItemRefTooltip",
     "GetCursorPosition", "GetCursorInfo", "ClearCursor", "IsModifiedClick",
-    "ChatFrameUtil", "ChatEdit_InsertLink",
+    "ChatFrameUtil", "ChatEdit_InsertLink", "Minimap", "GetMinimapShape", "AddonCompartmentFrame",
     -- Namespaced APIs
     "C_DateAndTime", "C_QuestLog", "C_Item", "C_Map", "C_SuperTrack", "C_Timer", "C_Spell", "UiMapPoint",
     -- Global APIs

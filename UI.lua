@@ -262,6 +262,15 @@ local function OptionsMenu()
             db.icon = not db.icon
             if ns.UpdateIcon then ns.UpdateIcon() end
         end },
+        { text = "Minimap button", checked = db.minimap ~= false, func = function()
+            db.minimap = db.minimap == false
+            ns.UpdateMinimap()
+        end },
+        { text = ns.HasDrawer() and "Entry in the addon drawer" or "Entry in the addon drawer (WoW Forever only)",
+            checked = ns.HasDrawer() and db.drawer ~= false, disabled = not ns.HasDrawer(), func = function()
+                db.drawer = db.drawer == false
+                ns.UpdateDrawer()
+            end },
         { text = "Show other characters' pages", checked = db.showAll == true,
             tip = "Pages and folders marked for one character show for every character, dimmed.",
             func = function()

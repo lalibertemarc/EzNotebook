@@ -184,22 +184,11 @@ local function BuildIcon()
         self:StopMovingOrSizing()
         ns.db.iconPos = { self:GetLeft(), self:GetTop() }
     end)
-    icon:SetScript("OnClick", function(_, button)
-        if button == "RightButton" then
-            ns.Open(ns.Inbox().id, nil, true)
-        else
-            ns.Toggle()
-        end
-    end)
+    icon:SetScript("OnClick", function(_, button) ns.Launch(button) end)
     icon:SetScript("OnEnter", function(self)
         self:SetAlpha(1)
         GameTooltip:SetOwner(self, "ANCHOR_TOP")
-        GameTooltip:AddLine("EzNotebook")
-        local inbox = ns.Inbox()
-        local open = ns.CountOpen(inbox, ns.me, ns.Reset())
-        GameTooltip:AddLine(("%s: %d left"):format(inbox.title, open), 1, 0.82, 0)
-        GameTooltip:AddLine("Click: open the notebook", 0.8, 0.8, 0.8)
-        GameTooltip:AddLine(("Right-click: add to %s"):format(inbox.title), 0.8, 0.8, 0.8)
+        ns.LauncherTooltip(GameTooltip)
         GameTooltip:AddLine("Drag: move", 0.8, 0.8, 0.8)
         GameTooltip:Show()
     end)
@@ -218,5 +207,7 @@ end
 -- At login (Core), once the saved variables exist.
 function ns.Login()
     ns.UpdateIcon()
+    ns.UpdateMinimap()
+    ns.UpdateDrawer()
     ns.RedrawPin()
 end

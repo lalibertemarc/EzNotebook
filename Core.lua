@@ -451,6 +451,8 @@ local HELP = {
     "/nb pin - pin the open list to the screen (again: unpin)",
     "/nb notify [on|off] - a chat line when a task ticks itself",
     "/nb icon [on|off] - the launcher icon above the chat",
+    "/nb minimap [on|off] - the minimap button",
+    "/nb drawer [on|off] - the entry in the addon drawer (WoW Forever)",
     "/nb reset - put the window, icon and pin back in place",
 }
 
@@ -488,12 +490,22 @@ local function Slash(msg)
         db.icon = OnOff(rest:lower(), db.icon)
         if ns.UpdateIcon then ns.UpdateIcon() end
         ns.Print("Launcher icon: " .. (db.icon and "shown" or "hidden"))
+    elseif cmd == "minimap" then
+        db.minimap = OnOff(rest:lower(), db.minimap)
+        ns.UpdateMinimap()
+        ns.Print("Minimap button: " .. (db.minimap and "shown" or "hidden"))
+    elseif cmd == "drawer" then
+        if not ns.HasDrawer() then return ns.Print("This client has no addon drawer.") end
+        db.drawer = OnOff(rest:lower(), db.drawer)
+        ns.UpdateDrawer()
+        ns.Print("Addon drawer entry: " .. (db.drawer and "shown" or "hidden"))
     elseif cmd == "reset" then
-        db.win, db.iconPos, db.pinPos = nil, nil, nil
+        db.win, db.iconPos, db.pinPos, db.minimapAngle = nil, nil, nil, nil
+        if ns.PlaceMinimap then ns.PlaceMinimap() end
         if ns.PlaceWindow then ns.PlaceWindow() end
         if ns.UpdateIcon then ns.UpdateIcon() end
         if ns.PlacePin then ns.PlacePin() end
-        ns.Print("Window, icon and pin are back in place.")
+        ns.Print("Window, icons and pin are back in place.")
     else
         ns.Open(nil, msg) -- anything else: search for it
     end
@@ -524,10 +536,6 @@ function EzNotebook_AddTask(keystate)
     ns.Open(ns.Inbox().id, nil, true)
 end
 
-function EzNotebook_OnAddonCompartmentClick()
-    ns.Toggle()
-end
-
 ---------------------------------------------------------------------------
 -- Events
 ---------------------------------------------------------------------------
@@ -546,6 +554,8 @@ events:SetScript("OnEvent", function(_, event, a, b, _, _, e)
         db.bosses = db.bosses or {}
         if db.notify == nil then db.notify = true end
         if db.icon == nil then db.icon = true end
+        if db.minimap == nil then db.minimap = true end
+        if db.drawer == nil then db.drawer = true end
         ns.me = UnitGUID("player") or UnitName("player")
         ns.myName = UnitName("player")
         if not db.seeded then Seed() end

@@ -1,5 +1,11 @@
 # EzNotebook
 
+## v1.0.0-beta.2
+
+- **Minimap button.** Click to open the notebook, right-click to add a task to your Today list, drag it around the map's edge.
+- **Addon drawer entry** (WoW Forever) now has a tooltip and the same right-click.
+- Both can be turned off in the window's Options menu, or with `/nb minimap off` and `/nb drawer off`.
+
 ## v1.0.0-beta.1
 
 - First beta: a notebook for notes and todo lists, sorted into folders (folders inside folders, with colours).

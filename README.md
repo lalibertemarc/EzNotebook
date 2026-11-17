@@ -4,6 +4,7 @@ Notes and todo lists for World of Warcraft (WoW Forever and Classic Era), in fol
 
 - `/nb` (`/notebook`) opens the notebook; `/todo <task>` adds to your Today list; `/nb help` lists the rest.
 - Key bindings: *Open or close the notebook*, *Add a task to Today*.
+- Launchers: a minimap button, the addon drawer (WoW Forever) and an icon above the chat. Click opens the notebook, right-click adds a task. Each can be hidden from the window's Options menu (`/nb minimap|drawer|icon off`).
 - Right-click folders, pages and tasks for their options.
 
 | Task links to | Ticks when |

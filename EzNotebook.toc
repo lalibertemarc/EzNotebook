@@ -7,7 +7,6 @@
 ## IconTexture: Interface\Icons\INV_Misc_Book_09
 ## SavedVariables: EzNotebookDB
 ## SavedVariablesPerCharacter: EzNotebookCharDB
-## AddonCompartmentFunc: EzNotebook_OnAddonCompartmentClick
 
 Data.lua
 Logic.lua
@@ -15,3 +14,4 @@ Core.lua
 Menu.lua
 UI.lua
 Pin.lua
+Minimap.lua

@@ -174,6 +174,15 @@ _G.GetInstanceInfo = function()
     return state.zone, "none", 0, "", 0, 0, false, 0
 end
 
+_G.Minimap = Widget("Frame")
+_G.GetMinimapShape = function() return "ROUND" end
+local drawerUpdates = 0
+_G.AddonCompartmentFrame = {
+    registeredAddons = {},
+    RegisterAddon = function(self, data) table.insert(self.registeredAddons, data) end,
+    UpdateDisplay = function() drawerUpdates = drawerUpdates + 1 end,
+}
+
 ---------------------------------------------------------------------------
 -- Load
 ---------------------------------------------------------------------------
@@ -299,6 +308,22 @@ local welcome
 for _, p in pairs(db.pages) do if p.kind == "note" then welcome = p end end
 check(welcome and welcome.text:find("Shift%-click") and db.folders[welcome.folder].name == "Notes", "welcome note")
 check(_G.EzNotebookIcon and _G.EzNotebookIcon:IsShown(), "launcher icon")
+local mm = _G.EzNotebookMinimapButton
+check(mm and mm:IsShown(), "minimap button shown by default")
+local drawer = _G.AddonCompartmentFrame.registeredAddons
+check(#drawer == 1 and drawer[1].text == "EzNotebook" and drawer[1].icon == ns.ICON, "drawer entry registered")
+SlashCmdList.EZNOTEBOOK("minimap off")
+check(not mm:IsShown() and EzNotebookDB.minimap == false, "/nb minimap off hides it")
+SlashCmdList.EZNOTEBOOK("minimap")
+check(mm:IsShown(), "/nb minimap toggles it back")
+SlashCmdList.EZNOTEBOOK("drawer off")
+check(#drawer == 0 and drawerUpdates == 1, "/nb drawer off takes the entry out")
+SlashCmdList.EZNOTEBOOK("drawer on")
+check(#drawer == 1, "/nb drawer on puts it back once")
+SlashCmdList.EZNOTEBOOK("drawer on")
+check(#drawer == 1, "no second entry")
+mm.scripts.OnEnter(mm)
+drawer[1].funcOnEnter(mm)
 
 -- /todo and tasks ticking themselves
 local function task(text)
@@ -519,6 +544,14 @@ check(db.pinned ~= today.id, "/nb pin moves or clears the pin")
 _G.EzNotebook_AddTask("down")
 _G.EzNotebook_AddTask("up")
 check(addBox:HasFocus(), "add-task key focuses the add box on release")
+addBox:ClearFocus()
+win:Hide()
+drawer[1].func(nil, { buttonName = "LeftButton" })
+check(win:IsShown(), "drawer click opens the notebook")
+drawer[1].func(nil, { buttonName = "LeftButton" })
+check(not win:IsShown(), "and closes it")
+mm.scripts.OnClick(mm, "RightButton")
+check(win:IsShown() and addBox:HasFocus(), "minimap right-click: add a task")
 SlashCmdList.EZNOTEBOOK("help")
 SlashCmdList.EZNOTEBOOK("reset")
 
