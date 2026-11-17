@@ -1,0 +1,17 @@
+## Interface: 16001, 11509
+## Title: EzNotebook
+## Notes: Notes and todo lists in folders, with quest, item and dungeon links. Linked tasks tick themselves.
+## Author: Marc
+## Version: @project-version@
+## Category: Miscellaneous
+## IconTexture: Interface\Icons\INV_Misc_Book_09
+## SavedVariables: EzNotebookDB
+## SavedVariablesPerCharacter: EzNotebookCharDB
+## AddonCompartmentFunc: EzNotebook_OnAddonCompartmentClick
+
+Data.lua
+Logic.lua
+Core.lua
+Menu.lua
+UI.lua
+Pin.lua

@@ -1,0 +1,4 @@
+<Bindings>
+	<Binding name="EZNOTEBOOK_TOGGLE" category="EzNotebook">EzNotebook_Toggle()</Binding>
+	<Binding name="EZNOTEBOOK_ADD" runOnUp="true" category="EzNotebook">EzNotebook_AddTask(keystate)</Binding>
+</Bindings>
