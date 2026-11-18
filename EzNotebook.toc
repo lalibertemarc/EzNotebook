@@ -7,6 +7,7 @@
 ## IconTexture: Interface\Icons\INV_Misc_Book_09
 ## SavedVariables: EzNotebookDB
 ## SavedVariablesPerCharacter: EzNotebookCharDB
+## X-Curse-Project-ID: 1814490
 
 Data.lua
 Logic.lua
