@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="44%" r="70%">
+      <stop offset="0" stop-color="#173a52"/>
+      <stop offset="0.6" stop-color="#0d2032"/>
+      <stop offset="1" stop-color="#06111c"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff0b0"/>
+      <stop offset="0.45" stop-color="#e5b94c"/>
+      <stop offset="1" stop-color="#8f5f17"/>
+    </linearGradient>
+    <linearGradient id="page" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff8e2"/>
+      <stop offset="1" stop-color="#d9c494"/>
+    </linearGradient>
+    <linearGradient id="cover" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7a3a1c"/>
+      <stop offset="1" stop-color="#3a160a"/>
+    </linearGradient>
+    <linearGradient id="feather" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#b9c8d6"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffd76a" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#ffd76a" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="400" height="400" fill="url(#bg)"/>
+
+  <!-- stars -->
+  <g fill="#fff6d0" opacity="0.8">
+    <circle cx="30" cy="40" r="1.6"/><circle cx="372" cy="262" r="1.8"/><circle cx="118" cy="22" r="1.4"/>
+    <circle cx="292" cy="20" r="1.4"/><circle cx="24" cy="232" r="1.8"/><circle cx="380" cy="150" r="1.4"/>
+    <circle cx="44" cy="356" r="1.5"/>
+  </g>
+
+  <!-- warm glow behind the notebook -->
+  <ellipse cx="196" cy="214" rx="175" ry="165" fill="url(#halo)"/>
+
+  <!-- the notebook, a little turned -->
+  <g transform="rotate(-6 196 212)" stroke-linejoin="round">
+    <!-- back cover peeking out -->
+    <rect x="94" y="74" width="214" height="292" rx="12" fill="url(#cover)" stroke="#2a1205" stroke-width="6"/>
+    <!-- the page -->
+    <rect x="86" y="62" width="210" height="290" rx="8" fill="url(#page)" stroke="#3a2306" stroke-width="5"/>
+    <!-- margin line -->
+    <path d="M126,88 L126,340" stroke="#c0574a" stroke-width="2.5" opacity="0.55"/>
+
+    <!-- checklist: two done, one waiting -->
+    <g stroke="#3a2306" stroke-width="5" fill="#fffaf0">
+      <rect x="110" y="112" width="44" height="44" rx="7"/>
+      <rect x="110" y="190" width="44" height="44" rx="7"/>
+      <rect x="110" y="268" width="44" height="44" rx="7"/>
+    </g>
+    <!-- writing -->
+    <g stroke="#6b4a24" stroke-width="7" stroke-linecap="round" opacity="0.8">
+      <path d="M172,128 L268,128"/><path d="M172,146 L238,146"/>
+      <path d="M172,206 L262,206"/><path d="M172,224 L226,224"/>
+      <path d="M172,284 L214,284"/>
+    </g>
+    <!-- strike-through on the done ones -->
+    <g stroke="#3a2306" stroke-width="3" opacity="0.6" stroke-linecap="round">
+      <path d="M168,137 L272,137"/><path d="M168,215 L266,215"/>
+    </g>
+
+    <!-- spiral rings -->
+    <g fill="none" stroke="url(#gold)" stroke-width="7" stroke-linecap="round">
+      <path d="M126,74 C126,46 150,46 150,62"/>
+      <path d="M180,74 C180,46 204,46 204,62"/>
+      <path d="M234,74 C234,46 258,46 258,62"/>
+    </g>
+    <g fill="#3a2306">
+      <circle cx="150" cy="74" r="5"/><circle cx="204" cy="74" r="5"/><circle cx="258" cy="74" r="5"/>
+    </g>
+  </g>
+
+  <!-- gold check marks, ticking themselves (glowing, not rotated: they spill out of the boxes) -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <g stroke="#ffd76a" stroke-width="16" opacity="0.45" filter="url(#glow)">
+      <path d="M118,136 L134,154 L168,104"/>
+      <path d="M126,214 L142,232 L176,182"/>
+    </g>
+    <g stroke="#3a2306" stroke-width="17">
+      <path d="M118,136 L134,154 L168,104"/>
+      <path d="M126,214 L142,232 L176,182"/>
+    </g>
+    <g stroke="url(#gold)" stroke-width="10">
+      <path d="M118,136 L134,154 L168,104"/>
+      <path d="M126,214 L142,232 L176,182"/>
+    </g>
+  </g>
+
+  <!-- quill, writing the third task -->
+  <g transform="translate(232,286) rotate(-48)" stroke-linejoin="round">
+    <path d="M0,0 C30,-20 100,-46 162,-30 C120,-14 60,6 6,8 Z" fill="url(#feather)" stroke="#2a3a4a" stroke-width="4"/>
+    <g stroke="#7f93a6" stroke-width="2" fill="none" opacity="0.9">
+      <path d="M40,-6 L60,-26"/><path d="M70,-8 L92,-32"/><path d="M100,-12 L122,-32"/>
+      <path d="M40,0 L58,6"/><path d="M70,-2 L90,4"/>
+    </g>
+    <path d="M-4,4 L150,-28" stroke="#2a3a4a" stroke-width="3" fill="none"/>
+    <path d="M-26,14 L-2,0 L4,8 Z" fill="url(#gold)" stroke="#3a2306" stroke-width="3"/>
+  </g>
+
+  <!-- sparkles -->
+  <g fill="#fff6d0">
+    <path d="M330,96 l4,12 l12,4 l-12,4 l-4,12 l-4,-12 l-12,-4 l12,-4 z"/>
+    <path d="M52,118 l3,9 l9,3 l-9,3 l-3,9 l-3,-9 l-9,-3 l9,-3 z"/>
+    <path d="M66,320 l2.5,7.5 l7.5,2.5 l-7.5,2.5 l-2.5,7.5 l-2.5,-7.5 l-7.5,-2.5 l7.5,-2.5 z"/>
+  </g>
+  <g fill="#ffd76a" filter="url(#glow)">
+    <circle cx="40" cy="200" r="3.5"/><circle cx="364" cy="214" r="3"/><circle cx="200" cy="28" r="2.5"/>
+  </g>
+</svg>
